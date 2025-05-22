@@ -13,29 +13,131 @@ A Laravel-based RESTful API for managing todo tasks, built according to the prov
 
 ### Authentication
 
-- **POST /api/auth/login** - Authenticate a user and get a JWT token
-  - Request: `{ "email": "user@example.com", "password": "password" }`
-  - Response: `{ "token": "jwt_token_here" }`
+- **POST /api/auth/login** - Authenticate a user
+  - Request: 
+    ```json
+    {
+      "email": "test@example.com",
+      "password": "password"
+    }
+    ```
+  - Response: 
+    ```json
+    {
+      "token": "jwt_token_here"
+    }
+    ```
+
+- **POST /api/auth/logout** - Logout and invalidate token
+  - Headers: `Authorization: Bearer {token}`
+  - Response: 
+    ```json
+    {
+      "message": "Successfully logged out"
+    }
+    ```
+
+- **POST /api/auth/refresh** - Refresh JWT token
+  - Headers: `Authorization: Bearer {token}`
+  - Response: 
+    ```json
+    {
+      "token": "new_jwt_token_here"
+    }
+    ```
+
+- **GET /api/auth/me** - Get authenticated user profile
+  - Headers: `Authorization: Bearer {token}`
+  - Response: 
+    ```json
+    {
+      "id": 1,
+      "name": "Test User",
+      "email": "test@example.com",
+      "email_verified_at": null,
+      "created_at": "2023-01-01T00:00:00.000000Z",
+      "updated_at": "2023-01-01T00:00:00.000000Z"
+    }
+    ```
 
 ### Tasks
 
 - **GET /api/tasks** - List all tasks for the authenticated user
   - Headers: `Authorization: Bearer {token}`
-  - Response: Array of task objects
+  - Response: 
+    ```json
+    [
+      {
+        "id": "uuid-string",
+        "title": "Task title",
+        "description": "Task description",
+        "completed": false,
+        "created_at": "2023-01-01T00:00:00.000000Z",
+        "updated_at": "2023-01-01T00:00:00.000000Z",
+        "user_id": 1
+      }
+    ]
+    ```
 
 - **POST /api/tasks** - Create a new task
   - Headers: `Authorization: Bearer {token}`
-  - Request: `{ "title": "Task title", "description": "Task description" }`
-  - Response: Created task object
+  - Request: 
+    ```json
+    {
+      "title": "Task title",
+      "description": "Task description"
+    }
+    ```
+  - Response: 
+    ```json
+    {
+      "id": "uuid-string",
+      "title": "Task title",
+      "description": "Task description",
+      "completed": false,
+      "created_at": "2023-01-01T00:00:00.000000Z",
+      "updated_at": "2023-01-01T00:00:00.000000Z",
+      "user_id": 1
+    }
+    ```
 
 - **GET /api/tasks/{id}** - Get a specific task by ID
   - Headers: `Authorization: Bearer {token}`
-  - Response: Task object
+  - Response: 
+    ```json
+    {
+      "id": "uuid-string",
+      "title": "Task title",
+      "description": "Task description",
+      "completed": false,
+      "created_at": "2023-01-01T00:00:00.000000Z",
+      "updated_at": "2023-01-01T00:00:00.000000Z",
+      "user_id": 1
+    }
+    ```
 
 - **PATCH /api/tasks/{id}** - Update a task
   - Headers: `Authorization: Bearer {token}`
-  - Request: `{ "title": "Updated title", "description": "Updated description", "completed": true }`
-  - Response: Updated task object
+  - Request: 
+    ```json
+    {
+      "title": "Updated title",
+      "description": "Updated description",
+      "completed": true
+    }
+    ```
+  - Response: 
+    ```json
+    {
+      "id": "uuid-string",
+      "title": "Updated title",
+      "description": "Updated description",
+      "completed": true,
+      "created_at": "2023-01-01T00:00:00.000000Z",
+      "updated_at": "2023-01-01T00:00:00.000000Z",
+      "user_id": 1
+    }
+    ```
 
 - **DELETE /api/tasks/{id}** - Delete a task
   - Headers: `Authorization: Bearer {token}`
@@ -114,7 +216,7 @@ A Laravel-based RESTful API for managing todo tasks, built according to the prov
    ```
 
 ### Accessing the Application
-- The API will be available at: http://localhost
+- The API will be available at: http://localhost:8000
 - Database can be accessed at: localhost:3306
   - Database: todo_api
   - Username: todo_user
@@ -133,16 +235,14 @@ A test user is created when seeding the database:
 - Email: test@example.com
 - Password: password
 
-## Task Model
+## API Testing with Postman
 
-```json
-{
-  "id": "uuid-string",
-  "title": "Task title",
-  "description": "Task description",
-  "completed": false,
-  "createdAt": "2023-01-01T00:00:00.000Z",
-  "updatedAt": "2023-01-01T00:00:00.000Z"
-}
-```
+A Postman collection is included in the repository (`Todo_API.postman_collection.json`). You can import this collection into Postman to test all the API endpoints.
+
+### Testing Steps:
+1. Import the collection into Postman
+2. Set the `base_url` variable to `http://localhost:8000` (or your server URL)
+3. Use the "Login" request to authenticate and get a token
+4. The token will be automatically set for subsequent requests
+5. Test the other endpoints as needed
 

@@ -25,5 +25,5 @@ docker-compose exec app php artisan migrate:fresh --seed
 docker-compose exec app chmod -R 777 storage bootstrap/cache
 
 echo "Docker setup completed successfully!"
-echo "Your Todo API is now running at http://localhost"
+echo "Your Todo API is now running at http://localhost:8000"
 
