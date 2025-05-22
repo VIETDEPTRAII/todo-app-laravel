@@ -41,7 +41,7 @@ A Laravel-based RESTful API for managing todo tasks, built according to the prov
   - Headers: `Authorization: Bearer {token}`
   - Response: 204 No Content
 
-## Setup Instructions
+## Setup Instructions (Standard)
 
 1. Clone the repository
 2. Install dependencies:
@@ -65,6 +65,67 @@ A Laravel-based RESTful API for managing todo tasks, built according to the prov
    ```
    php artisan serve
    ```
+
+## Docker Setup (Recommended)
+
+### Prerequisites
+- Docker
+- Docker Compose
+
+### Quick Setup
+1. Clone the repository
+2. Run the setup script:
+   ```
+   ./docker-setup.sh
+   ```
+   This script will:
+   - Copy the `.env.example` to `.env`
+   - Build and start Docker containers
+   - Install composer dependencies
+   - Generate application key and JWT secret
+   - Run migrations and seed the database
+
+### Manual Setup
+1. Clone the repository
+2. Copy the `.env.example` file to `.env`:
+   ```
+   cp .env.example .env
+   ```
+3. Build and start the Docker containers:
+   ```
+   docker-compose build
+   docker-compose up -d
+   ```
+4. Install composer dependencies:
+   ```
+   docker-compose exec app composer install
+   ```
+5. Generate application key:
+   ```
+   docker-compose exec app php artisan key:generate
+   ```
+6. Generate JWT secret:
+   ```
+   docker-compose exec app php artisan jwt:secret
+   ```
+7. Run migrations and seed the database:
+   ```
+   docker-compose exec app php artisan migrate:fresh --seed
+   ```
+
+### Accessing the Application
+- The API will be available at: http://localhost
+- Database can be accessed at: localhost:3306
+  - Database: todo_api
+  - Username: todo_user
+  - Password: secret
+
+### Docker Commands
+- Start containers: `docker-compose up -d`
+- Stop containers: `docker-compose down`
+- View logs: `docker-compose logs -f`
+- Access app container: `docker-compose exec app bash`
+- Run artisan commands: `docker-compose exec app php artisan <command>`
 
 ## Test User
 
